@@ -3,7 +3,7 @@ import pymongo
 
 app = Flask(__name__)
 
-connect_Db_link = "mongodb+srv://Atharva:gta456@cluster0.bkejbfi.mongodb.net/?retryWrites=true&w=majority"
+connect_Db_link = "mongodb+srv://<username>:<password>@cluster0.bkejb.mongodb.net/?retryWrites=true&w=majority"
 
 @app.route('/', methods=['GET', 'POST'])
 def handle_request():
