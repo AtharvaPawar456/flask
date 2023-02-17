@@ -4,7 +4,6 @@ from flask_restful import Api, Resource, reqparse
 import json
 # filename = 'sample.json'
 
-connect_Db_link = "mongodb+srv://Atharva:gta456@cluster0.bkejbfi.mongodb.net/?retryWrites=true&w=majority"
 
 client = pymongo.MongoClient(connect_Db_link)
 db = client.get_database('Students_db')
