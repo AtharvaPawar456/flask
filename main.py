@@ -1,24 +1,43 @@
-from flask import Flask, request
 import pymongo
+from flask import Flask
+from flask_restful import Api, Resource, reqparse
+import json
+# filename = 'sample.json'
+
+connect_Db_link = "mongodb+srv://Atharva:gta456@cluster0.bkejbfi.mongodb.net/?retryWrites=true&w=majority"
+
+client = pymongo.MongoClient(connect_Db_link)
+db = client.get_database('Students_db')
+records = db.students_record
 
 app = Flask(__name__)
+api = Api(app)
 
-connect_Db_link = "mongodb+srv://<username>:<password>@cluster0.bkejb.mongodb.net/?retryWrites=true&w=majority"
+class VideoCls(Resource):
 
-@app.route('/', methods=['GET', 'POST'])
-def handle_request():
-    text1 = str(request.args.get('input1'))
-    text2 = str(request.args.get('input2'))
-    text3 = str(request.args.get('input3'))
-    character_count = len(text1) + len(text2) + len(text3)
+    def get(self,name,views,likes):
+        retMSG = {
+                        "name": name,
+                        "views": views,
+                        "likes": likes,
+                        "dB_total": records.count_documents({})
+                    }
 
-    client = pymongo.MongoClient(connect_Db_link)
-    db = client.get_database('Students_db')
-    records = db.students_record
-    dictionary = {'name': text1, 'roll_no': text2, 'mks': text3, 'CharCount': character_count}
-    records.insert_one(dictionary)
 
-    return "Data uploaded successfully."
+#         with open(filename, "r") as file:
+#             data = json.load(file)
+#         data.append(retMSG)
+#         with open(filename, "w") as file:
+#             json.dump(data, file,indent=4)
 
-if __name__ == '__main__':
+        records.insert_one(retMSG)
+
+
+        return {"Success":200,"MongodB_Total_Records":retMSG["dB_total"]}
+
+
+api.add_resource(VideoCls,"/video/<string:name>/<int:views>/<int:likes>")
+
+if __name__ == "__main__":
     app.run(debug=True)
+  
